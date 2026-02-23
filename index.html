@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Church Scripture Display</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <h1>Church Scripture Display</h1>
+        <p>Search and project Bible passages for your church service.</p>
+      </header>
+
+      <section class="controls" aria-label="Passage controls">
+        <label class="field">
+          Passage
+          <input
+            id="passageInput"
+            type="text"
+            placeholder="John 3:16-18"
+            value="Psalm 23"
+            autocomplete="off"
+          />
+        </label>
+
+        <label class="field">
+          Translation
+          <select id="translationSelect">
+            <option value="kjv">King James Version (KJV)</option>
+            <option value="web" selected>World English Bible (WEB)</option>
+            <option value="asv">American Standard Version (ASV)</option>
+            <option value="bbe">Bible in Basic English (BBE)</option>
+          </select>
+        </label>
+
+        <div class="action-row">
+          <button id="loadBtn" type="button">Load Passage</button>
+          <button id="projectBtn" type="button" class="secondary">Projection Mode</button>
+        </div>
+
+        <p id="status" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="history" aria-label="Recently loaded passages">
+        <h2>Recent Passages</h2>
+        <div id="historyButtons" class="history-buttons"></div>
+      </section>
+
+      <section class="display" aria-label="Bible passage display">
+        <h2 id="referenceTitle">Psalm 23 (WEB)</h2>
+        <article id="verses" class="verses"></article>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
