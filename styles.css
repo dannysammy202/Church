@@ -1,0 +1,181 @@
+:root {
+  --bg: #0d1321;
+  --panel: #1d2d44;
+  --text: #f0ebd8;
+  --accent: #3e5c76;
+  --accent-strong: #748cab;
+  --danger: #f07167;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", "Segoe UI", Roboto, sans-serif;
+  background: radial-gradient(circle at top, #1d2d44 0%, #0d1321 55%);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.app-shell {
+  width: min(1000px, 92vw);
+  margin: 2rem auto 3rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.hero,
+.controls,
+.display,
+.history {
+  background: color-mix(in srgb, var(--panel) 88%, black);
+  border: 1px solid color-mix(in srgb, var(--accent) 60%, white);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 14px 30px rgb(0 0 0 / 0.25);
+}
+
+.hero h1 {
+  margin: 0 0 0.25rem;
+}
+
+.hero p {
+  margin: 0;
+  color: color-mix(in srgb, var(--text) 80%, var(--accent-strong));
+}
+
+.controls {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 600;
+}
+
+input,
+select,
+button {
+  font: inherit;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--accent) 65%, white);
+  padding: 0.6rem 0.75rem;
+}
+
+input,
+select {
+  background: #f9fafb;
+  color: #101828;
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+button {
+  background: var(--accent);
+  color: var(--text);
+  cursor: pointer;
+  border: 1px solid var(--accent-strong);
+  transition: transform 120ms ease, background-color 120ms ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  background: var(--accent-strong);
+}
+
+button.secondary {
+  background: transparent;
+}
+
+#status {
+  margin: 0;
+  min-height: 1.25rem;
+}
+
+#status.error {
+  color: var(--danger);
+}
+
+.history h2,
+.display h2 {
+  margin-top: 0;
+}
+
+.history-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.history-buttons button {
+  background: color-mix(in srgb, var(--accent) 70%, black);
+}
+
+.verses {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.verse {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 1.08rem;
+}
+
+.verse-number {
+  color: color-mix(in srgb, var(--text) 60%, var(--accent-strong));
+  margin-right: 0.4rem;
+  font-weight: 700;
+}
+
+body.projection {
+  background: #000;
+}
+
+body.projection .app-shell {
+  width: min(1400px, 95vw);
+}
+
+body.projection .controls,
+body.projection .history,
+body.projection .hero {
+  display: none;
+}
+
+body.projection .display {
+  background: transparent;
+  border-color: #222;
+  box-shadow: none;
+  min-height: 90vh;
+}
+
+body.projection .display h2 {
+  font-size: clamp(1.7rem, 2.4vw, 2.5rem);
+}
+
+body.projection .verse {
+  font-size: clamp(1.55rem, 2.6vw, 3rem);
+  line-height: 1.45;
+}
+
+@media (max-width: 680px) {
+  .app-shell {
+    width: 94vw;
+    margin-top: 1rem;
+  }
+
+  .hero,
+  .controls,
+  .display,
+  .history {
+    padding: 0.9rem;
+  }
+}
