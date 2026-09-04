@@ -1,0 +1,59 @@
+name: Temporary WorshipFlow Windows Build
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-worshipflow:
+    runs-on: windows-latest
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+    steps:
+      - name: Checkout WorshipFlow build branch
+        uses: actions/checkout@v4
+        with:
+          ref: worshipflow-windows-build
+
+      - name: Reassemble WorshipFlow source
+        shell: pwsh
+        run: |
+          $parts = Get-ChildItem 'worshipflow-build/source.part*' | Sort-Object Name
+          $base64 = ($parts | ForEach-Object { Get-Content $_.FullName -Raw }) -join ''
+          [IO.File]::WriteAllBytes('worshipflow-source.zip', [Convert]::FromBase64String($base64))
+          New-Item -ItemType Directory -Path 'worshipflow-app' -Force | Out-Null
+          Expand-Archive -Path 'worshipflow-source.zip' -DestinationPath 'worshipflow-app' -Force
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install build dependencies
+        shell: pwsh
+        working-directory: worshipflow-app
+        run: |
+          node -e "const fs=require('fs'); const p=require('./package.json'); p.devDependencies.electron='43.2.0'; fs.writeFileSync('package.json', JSON.stringify(p,null,2));"
+          npm install --no-audit --no-fund
+
+      - name: Build Windows installer
+        shell: pwsh
+        working-directory: worshipflow-app
+        run: npm run dist:win -- --x64
+
+      - name: Verify installer
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem 'worshipflow-app/release/*.exe' | Select-Object -First 1
+          if (-not $exe) { throw 'WorshipFlow installer was not produced.' }
+          Write-Host "Installer: $($exe.FullName)"
+          Write-Host "Size: $($exe.Length) bytes"
+
+      - name: Upload Windows installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: WorshipFlow-Windows-Installer
+          path: worshipflow-app/release/*.exe
+          if-no-files-found: error
+          retention-days: 7
